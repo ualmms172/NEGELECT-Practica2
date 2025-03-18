@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat de Análisis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Estilos idénticos a versiones anteriores */
+        .chat-container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 80%;
+            animation: appear 0.3s ease;
+        }
+
+        .user-message {
+            background: #000;
+            color: white;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: #f8f8f8;
+            position: relative;
+        }
+
+        .bot-message strong {
+            color: #10a37f;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        textarea {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            resize: none;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background" id="animatedBg"></div>
+
+    <div class="chat-container">
+        <div class="messages-area" id="messages"></div>
+        
+        <form class="input-area" id="chatForm">
+            <textarea id="userInput" placeholder="Escribe tu opinión aquí..." required></textarea>
+            <button type="submit">Analizar</button>
+        </form>
+    </div>
+
+    <script>
+        // Cargar historial al iniciar
+        fetch('/chat', {
+            headers: {'X-Requested-With': 'XMLHttpRequest'}
+        })
+        .then(response => response.json())
+        .then(historial => {
+            historial.forEach(msg => mostrarMensaje(msg));
+        });
+
+        // Manejar envío de formulario
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const texto = document.getElementById('userInput').value.trim();
+            
+            if(texto) {
+                const formData = new FormData();
+                formData.append('texto', texto);
+                
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) return;
+                    mostrarMensaje(data);
+                    document.getElementById('userInput').value = '';
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+
+        function mostrarMensaje(mensaje) {
+    const messagesDiv = document.getElementById('messages');
+    
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user-message';
+    userMsg.textContent = mensaje.usuario;
+    messagesDiv.appendChild(userMsg);
+    
+    const botMsg = document.createElement('div');
+    botMsg.className = 'message bot-message';
+
+    const contenedorBot = document.createElement('div');
+    contenedorBot.style.display = 'flex';
+    contenedorBot.style.justifyContent = 'space-between';
+    contenedorBot.style.alignItems = 'center';
+
+    const textoBot = document.createElement('div');
+    textoBot.innerHTML = `
+        🔍 Análisis completo:<br><br>
+        • Texto original: ${mensaje.usuario}<br>
+        • Sentimiento: <strong>${mensaje.resultado}</strong>
+    `;
+
+    const botonLike = document.createElement('img');
+    botonLike.src = "{{ url_for('static', filename='boton.png') }}";
+    botonLike.style.width = '30px';
+    botonLike.style.height = '30px';
+    botonLike.style.cursor = 'pointer';
+
+    // Aquí determinamos claramente qué se guardará según el resultado del bot
+    let textoAGuardar = '';
+    if (mensaje.resultado === 'Positivo') {
+    textoAGuardar = '\n' + mensaje.usuario + ':Positive';
+} else if (mensaje.resultado === 'Negativo') {
+    textoAGuardar = '\n' + mensaje.usuario + ':Negative';
+} else {
+    textoAGuardar = '\n' + mensaje.usuario + ':Neutral';
+}
+
+    // Evento onclick
+    botonLike.onclick = function() {
+        guardarMensaje(textoAGuardar);
+    };
+
+    contenedorBot.appendChild(textoBot);
+    contenedorBot.appendChild(botonLike);
+
+    botMsg.appendChild(contenedorBot);
+    messagesDiv.appendChild(botMsg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+    </script>
+
+    <script>
+        // Script de partículas (idéntico a portada)
+        function createParticles() {
+            const container = document.getElementById('animatedBg');
+            const particleCount = 25;
+
+            for(let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() < 0.2 ? 
+                    Math.random() * 50 + 20 : 
+                    Math.random() * 30 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+
+  
+        function guardarMensaje(texto) {
+    fetch('/guardar_mensaje', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ texto: texto, archivo: '../datosObtenidos.txt' })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.estado));
+}
+
+    </script>
+
+    <script>
+
+function guardarMensaje(texto) {
+    fetch('/guardar_mensaje', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        // esta es la ruta relativa correcta desde templates:
+        body: JSON.stringify({texto: texto, archivo: '../datosObtenidos.txt'})
+    })
+    .then(res => res.json())
+    .then(data => alert(data.estado))
+    .catch(err => alert("Error al guardar: " + err));
+}
+
+
+    </script>
+
+
+    
+
+
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+Producto de muy baja calidad, no lo recomiendo:Negative
+El artículo llegó roto, muy decepcionado:Negative
+No funcionó como esperaba, pésima compra:Negative
+No vale lo que cuesta, me siento estafado:Negative
+Duró solo un par de días, calidad muy mala:Negative
+Muy por debajo de mis expectativas, un desastre:Negative
+La peor compra que he hecho, no lo recomiendo:Negative
+Se descompuso al primer uso, no lo recomiendo:Negative
+Mala experiencia, definitivamente no lo volvería a comprar:Negative
+El tamaño no coincide con la descripción, decepcionante:Negative
+No cumplió con su función, mala calidad:Negative
+Los materiales se ven baratos y frágiles:Negative
+El servicio al cliente no me ayudó con el problema:Negative
+El producto llegó incompleto, muy mal servicio:Negative
+No funciona bien, se bloquea constantemente:Negative
+Me siento engañado con esta compra:Negative
+La batería no dura nada, una gran decepción:Negative
+La descripción es engañosa, no era lo que esperaba:Negative
+No duró ni una semana, muy mala calidad:Negative
+Esperaba algo mejor por este precio:Negative
+Es funcional, aunque su diseño no es muy atractivo:Neutral
+Cumple con lo prometido, aunque sin destacar:Neutral
+Es un producto promedio, sin sorpresas:Neutral
+No está mal, pero tampoco es lo mejor:Neutral
+Hace lo que dice, aunque podría ser mejor:Neutral
+Buena relación calidad-precio, aunque hay opciones superiores:Neutral
+No es excelente, pero cumple su función:Neutral
+Es aceptable, aunque esperaba más calidad:Neutral
+Cumple con lo básico, pero no destaca:Neutral
+La calidad es decente, pero no sobresaliente:Neutral
+Es un producto estándar, nada especial:Neutral
+El color no es como en la foto, pero funciona bien:Neutral
+Me funciona, aunque tiene algunos detalles mejorables:Neutral
+No está mal, pero hay opciones más baratas y similares:Neutral
+Hace lo que dice, aunque esperaba más duración:Neutral
+Un producto promedio, no sorprende pero tampoco decepciona:Neutral
+El material no es el mejor, pero cumple su función:Neutral
+No es lo mejor, pero por el precio está bien:Neutral
+La funcionalidad es correcta, pero el diseño no me convence:Neutral
+Un producto que cumple, aunque sin destacar:Neutral
+Satisfecho con la compra, volvería a comprarlo:Positive
+Superó mis expectativas, muy buen producto:Positive
+Increíble calidad, totalmente recomendable:Positive
+Me encanta, justo lo que estaba buscando:Positive
+Una compra excelente, muy satisfecho:Positive
+El mejor producto que he comprado en mucho tiempo:Positive
+Vale cada euro, una calidad espectacular:Positive
+Sin duda, repetiré la compra en el futuro:Positive
+Lo recomendaría sin dudar, ha sido una gran experiencia:Positive
+Ha sido una de mis mejores adquisiciones:Positive
+Muy buen producto, ha superado mis expectativas:Positive
+Excelente calidad, lo volvería a comprar:Positive
+Sorprendentemente bueno, no me lo esperaba:Positive
+Funciona perfectamente, muy recomendable:Positive
+Me ha encantado, una compra excelente:Positive
+Perfecto en todos los aspectos, lo recomiendo:Positive
+Producto de alta calidad, muy satisfecho:Positive
+Definitivamente una gran compra, lo recomendaría:Positive
+Muy buena compra, ha valido la pena:Positive
+Estoy realmente contento con la calidad:Positive
+No podría estar más satisfecho, excelente compra:Positive
+Un producto espectacular, superó mis expectativas:Positive
+Encantado con la compra, todo perfecto:Positive
+Supera a la competencia, excelente calidad:Positive
+Gran relación calidad-precio, muy recomendable:Positive
+Muy práctico y funcional, ha sido una gran compra:Positive
+Producto de primera calidad, muy contento con él:Positive
+Una inversión que ha valido cada centavo:Positive
+Totalmente satisfecho con la compra:Positive
+Un artículo increíble, no puedo estar más feliz:Positive
+Gran calidad y rendimiento, muy satisfecho:Positive
+Mejor de lo que esperaba, muy recomendable:Positive
+Producto espectacular, volveré a comprar:Positive
+Calidad impresionante, realmente sorprendido:Positive
+Me ha encantado, no tengo ninguna queja:Positive
+Muy recomendable, una compra excelente:Positive
+Espectacular calidad, mejor de lo que imaginaba:Positive
+Un producto increíble, superó mis expectativas:Positive
+Excelente en todos los sentidos, muy contento:Positive
+No podría estar más satisfecho con mi compra:Positive
+De lo mejor que he comprado, sin duda repetiré:Positive
+Un acierto total, calidad superior:Positive
+Supera mis expectativas, ha sido una gran compra:Positive
+Recomendaría este producto sin dudarlo:Positive
+Muy conforme con la compra, excelente calidad:Positive
+Definitivamente, una de mis mejores adquisiciones:Positive
+Una compra genial, lo volvería a elegir:Positive
+Alta calidad y rendimiento, muy satisfecho:Positive
+Gran experiencia de compra, todo perfecto:Positive
+Un producto maravilloso, ha valido la pena:Positive
+La mejor compra que he hecho en mucho tiempo:Positive

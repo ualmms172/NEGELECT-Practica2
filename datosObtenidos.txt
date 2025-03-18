@@ -1,0 +1,10 @@
+Me encanta:Positive
+Es horrible:Negative
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral
+Está bien pero puede mejorar:Neutral

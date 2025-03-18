@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Archivo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .file-container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drop-zone {
+            border: 2px dashed #e5e5e5;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 2rem;
+        }
+
+        .drop-zone:hover {
+            border-color: #10a37f;
+            background: rgba(16, 163, 127, 0.05);
+        }
+
+        .drop-zone.dragover {
+            border-color: #10a37f;
+            background: rgba(16, 163, 127, 0.1);
+        }
+
+        #chart-container {
+            margin-top: 2rem;
+            height: 400px;
+            display: none;
+        }
+
+        .instructions {
+            color: #666;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #10a37f;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background" id="animatedBg"></div>
+
+    <div class="file-container">
+        <div class="instructions">
+            <h2>Análisis de Archivo de Opiniones</h2>
+            <p>Sube un archivo .txt con una opinión por línea</p>
+        </div>
+
+        <div class="drop-zone" id="dropZone">
+            <div>📁 Arrastra tu archivo aquí o haz clic para seleccionar</div>
+            <input type="file" hidden id="fileInput" accept=".txt">
+        </div>
+
+        <div id="chart-container">
+            <canvas id="sentimentChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let chart = null;
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        // Configurar drag and drop
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if(files.length) handleFile(files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files.length) handleFile(e.target.files[0]);
+        });
+
+        async function handleFile(file) {
+            try {
+                if(!file.name.endsWith('.txt')) {
+                    alert('Solo se permiten archivos .txt');
+                    return;
+                }
+
+                // Mostrar loader
+                dropZone.innerHTML = '<div class="loader"></div>';
+
+                const formData = new FormData();
+                formData.append('archivo', file);
+
+                const response = await fetch('/analizar-archivo', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if(data.error) throw new Error(data.error);
+                
+                mostrarResultados(data);
+
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                dropZone.innerHTML = '<div>📁 Arrastra tu archivo aquí o haz clic para seleccionar</div>';
+            }
+        }
+
+        function mostrarResultados(data) {
+            const ctx = document.getElementById('sentimentChart').getContext('2d');
+            
+            if(chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.conteo),
+                    datasets: [{
+                        data: Object.values(data.conteo),
+                        backgroundColor: [
+                            '#F44336', // Positive
+                            '#FFC107', // Neutral
+                            '#4CAF50'  // Negative
+                            
+
+
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        title: {
+                            display: true,
+                            text: `Distribución de Sentimientos (${data.total} opiniones)`
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('chart-container').style.display = 'block';
+        }
+    </script>
+
+    <!-- Script del fondo animado -->
+    <script>
+        function createParticles() {
+            const container = document.getElementById('animatedBg');
+            const particleCount = 25;
+
+            for(let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() < 0.2 ? 
+                    Math.random() * 50 + 20 : 
+                    Math.random() * 30 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
